@@ -1,3 +1,4 @@
+import { GetBookmarkDto } from './dto/get-bookmark.dto';
 import { CreateBookmarkDto } from './dto/create-bookmark.dto';
 import { Injectable } from '@nestjs/common';
 import { Bookmark } from './bookmark.model';
@@ -9,6 +10,27 @@ export class BookmarksService {
 
   findAll(): Bookmark[] {
     return this.bookmarks;
+  }
+
+  find(getBookmarkDto: GetBookmarkDto): Bookmark[] {
+    let bookmarks = this.findAll();
+    const { url, description } = getBookmarkDto;
+    if (url) {
+      bookmarks = bookmarks.filter((bookmark) =>
+        bookmark.url.toLowerCase().includes(url),
+      );
+    }
+    if (description) {
+      bookmarks = bookmarks.filter((bookmark) =>
+        bookmark.description.toLowerCase().includes(description),
+      );
+    }
+
+    return bookmarks;
+  }
+
+  findById(id: string): Bookmark {
+    return this.bookmarks.find((bookmark) => bookmark.id === id);
   }
 
   createBookmark(createBookmarkDto: CreateBookmarkDto): Bookmark {
