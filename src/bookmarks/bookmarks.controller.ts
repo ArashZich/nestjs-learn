@@ -1,5 +1,13 @@
 import { GetBookmarkDto } from './dto/get-bookmark.dto';
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { Bookmark } from './bookmark.model';
 import { BookmarksService } from './bookmarks.service';
 import { CreateBookmarkDto } from './dto/create-bookmark.dto';
@@ -24,5 +32,10 @@ export class BookmarksController {
   @Post()
   createBookmark(@Body() createBookmarkDto: CreateBookmarkDto): Bookmark {
     return this.bookmarkService.createBookmark(createBookmarkDto);
+  }
+
+  @Delete('/:id')
+  deleteBookmark(@Param('id') id: string): void {
+    return this.bookmarkService.deleteBookmark(id);
   }
 }
